@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Container, Button } from "react-bootstrap";
-// import "./AdminPage.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AdminPage = () => {
   const [bookings, setBookings] = useState([
@@ -23,13 +24,26 @@ const AdminPage = () => {
     // Add more booking objects as needed
   ]);
 
-  const updateStatus = (bookingId, newStatus) => {
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const updateStatus = (index, newStatus) => {
     setBookings((prevBookings) =>
-      prevBookings.map((booking) =>
-        booking.id === bookingId ? { ...booking, status: newStatus } : booking
+      prevBookings.map((booking, i) =>
+        i === index ? { ...booking, status: newStatus } : booking
       )
     );
   };
+
+  const filteredBookings = selectedDate
+    ? bookings.filter(
+        (booking) =>
+          booking.dateBooked === selectedDate.toISOString().slice(0, 10)
+      )
+    : bookings;
 
   return (
     <div className="admin-page">
@@ -38,6 +52,13 @@ const AdminPage = () => {
         {/* Navigation buttons or links */}
       </nav>
       <Container className="mt-3">
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="yyyy-MM-dd"
+          placeholderText="Select a date"
+          className="form-control mb-3"
+        />
         <Table striped bordered hover className="booking-table">
           <thead>
             <tr>
@@ -50,7 +71,7 @@ const AdminPage = () => {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking) => (
+            {filteredBookings.map((booking, index) => (
               <tr key={booking.id}>
                 <td>{booking.customerName}</td>
                 <td>{booking.destination}</td>
@@ -61,23 +82,23 @@ const AdminPage = () => {
                   <Button
                     variant="primary"
                     size="sm"
-                    onClick={() => updateStatus(booking.id, "Done")}
+                    onClick={() => updateStatus(index, "Done")}
                   >
                     Done
                   </Button>{" "}
                   <Button
                     variant="warning"
                     size="sm"
-                    onClick={() => updateStatus(booking.id, "Pending")}
+                    onClick={() => updateStatus(index, "Pending")}
                   >
                     Pending
                   </Button>{" "}
                   <Button
                     variant="danger"
                     size="sm"
-                    onClick={() => updateStatus(booking.id, "Reserved")}
+                    onClick={() => updateStatus(index, "Cancelled")}
                   >
-                    Reserved
+                    Cancelled
                   </Button>
                 </td>
               </tr>

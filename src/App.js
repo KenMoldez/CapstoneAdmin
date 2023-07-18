@@ -7,6 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Route, Routes } from "react-router-dom";
 import NavigationBar from "./Navbar";
 import AdminPage from "./Admin";
+import Login from "./Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       {/* <TEST /> */}
       <Routes>
         <Route exact path="/Admin" element={<AdminPage />} />
+        <Route exact path="/AdLogin" element={<Login />} />
       </Routes>
     </div>
   );

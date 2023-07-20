@@ -1,8 +1,18 @@
 import { Navbar, Nav, Container, Offcanvas, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
+import { auth } from "./config/firebase";
+import { useEffect, useState } from "react";
 
 const NavigationBar = () => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCount((count) => count + 1);
+    }, 800);
+  }, [count]);
+
   return (
     <div className="Navbar">
       <nav>
@@ -28,36 +38,27 @@ const NavigationBar = () => {
                   </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Nav.Link>
-                      <Link className="navbar-link" to="/">
-                        Home
-                      </Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                      <Link className="navbar-link" to="/about">
-                        About
-                      </Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                      <Link className="navbar-link" to="/destinations">
-                        Destinations
-                      </Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                      <Link className="navbar-link" to="/Admin">
-                        Admin
-                      </Link>
-                    </Nav.Link>
-                  </Nav>
-                  <Nav>
-                    <Button>
+                  {auth.currentUser ? (
+                    <Nav className="justify-content-end flex-grow-1 pe-3">
                       <Nav.Link>
-                        <Link className="header-btn-group" to="/AdLogin">
-                          Login
+                        <Link className="navbar-link" to="/Admin">
+                          Dashboard
                         </Link>
                       </Nav.Link>
-                    </Button>
+                      {/* <Nav.Link>
+                        <Link className="navbar-link" to="/Admin">
+                          Dashboard
+                        </Link>
+                      </Nav.Link> */}
+                    </Nav>
+                  ) : (
+                    <></>
+                  )}
+
+                  <Nav className="justify-content-end flex-grow-1 pe-3">
+                    <Link className="header-btn-group" to="/AdLogin">
+                      <Button>{auth.currentUser ? "logout" : "login"}</Button>
+                    </Link>
                   </Nav>
                 </Offcanvas.Body>
               </Navbar.Offcanvas>

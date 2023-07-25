@@ -1,4 +1,4 @@
-import { Navbar, Nav, Container, Offcanvas, Button } from "react-bootstrap";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 import { auth } from "./config/firebase";
@@ -13,59 +13,48 @@ const NavigationBar = () => {
     }, 800);
   }, [count]);
 
+  // Function to handle logout and redirection
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        // Redirect to the Login page after successful logout
+        window.location.href = "/AdLogin";
+      })
+      .catch((error) => {
+        // Handle error, if any
+        console.error("Error logging out: ", error);
+      });
+  };
+
   return (
     <div className="Navbar">
-      <nav>
-        {["lg"].map((expand) => (
-          <Navbar
-            key={expand}
-            expand={expand}
-            className="bg-body-tertiary mt-3 header"
-          >
-            <Container>
-              <Navbar.Brand>LAKBAY - TIKANG</Navbar.Brand>
-              <Navbar.Toggle
-                aria-controls={`offcanvasNavbar-expand-${expand}`}
-              />
-              <Navbar.Offcanvas
-                id={`offcanvasNavbar-expand-${expand}`}
-                aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-                placement="end"
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                    Offcanvas
-                  </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  {auth.currentUser ? (
-                    <Nav className="justify-content-end flex-grow-1 pe-3">
-                      <Nav.Link>
-                        <Link className="navbar-link" to="/Admin">
-                          Dashboard
-                        </Link>
-                      </Nav.Link>
-                      {/* <Nav.Link>
-                        <Link className="navbar-link" to="/Admin">
-                          Dashboard
-                        </Link>
-                      </Nav.Link> */}
-                    </Nav>
-                  ) : (
-                    <></>
-                  )}
-
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Link className="header-btn-group" to="/AdLogin">
-                      <Button>{auth.currentUser ? "logout" : "login"}</Button>
-                    </Link>
-                  </Nav>
-                </Offcanvas.Body>
-              </Navbar.Offcanvas>
-            </Container>
-          </Navbar>
-        ))}
-      </nav>
+      <Container>
+        <Navbar expand="lg" className="bg-body-tertiary mt-3 header">
+          <Navbar.Brand className="mx-auto">
+            <img
+              src={process.env.PUBLIC_URL + "/Images/Lakbay - Tikang.png"}
+              alt="LAKBAY - TIKANG"
+              width="100"
+              height="80"
+            />
+          </Navbar.Brand>
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="ms-auto">
+              {auth.currentUser ? (
+                <Nav.Link>
+                  <Link className="navbar-link" to="/Admin">
+                    Dashboard
+                  </Link>
+                </Nav.Link>
+              ) : null}
+              <Button onClick={handleLogout}>
+                {auth.currentUser ? "Logout" : "Login"}
+              </Button>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </Container>
     </div>
   );
 };

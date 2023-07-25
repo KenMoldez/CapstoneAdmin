@@ -55,82 +55,96 @@ const AdminPage = (props) => {
   }, [count]);
 
   return (
-    <div className="admin-page">
-      <nav className="admin-navbar">
-        <h1 className="admin-title">Admin Page</h1>
-        {/* Navigation buttons or links */}
-      </nav>
-      <Container className="mt-3">
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Select a date"
-          className="form-control mb-3"
-        />
-        <Table striped bordered hover className="booking-table">
-          <thead>
-            <tr>
-              <th>Customer Name</th>
-              <th>Destination Booked</th>
-              <th>Date Booked</th>
-              <th>Payment</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredBookings.map((booking, index) => (
-              <tr key={booking.id}>
-                <td>{booking.name}</td>
-                <td>{booking.location}</td>
-                <td>{booking.date}</td>
-                <td>{booking.billout}</td>
-                <td>{booking.status}</td>
-                <td>
-                  {spin ? (
-                    <>
-                      <div className="d-grid">
-                        {" "}
-                        <Button variant="danger" size="sm" disabled="disabled">
-                          Loading
-                        </Button>{" "}
-                        <Button variant="danger" size="sm" disabled="disabled">
-                          Loading
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="d-grid">
-                        {" "}
-                        <Button
-                          variant="primary"
-                          size="sm"
-                          value={booking.id}
-                          onClick={updateStatusDone}
-                        >
-                          Done
-                        </Button>
-                      </div>
-                      <div className="d-grid">
-                        {" "}
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          value={booking.id}
-                          onClick={updateStatusCan}
-                        >
-                          Cancelled
-                        </Button>
-                      </div>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
+    <div className="destination-grid">
+      <div className="destination-container">
+        <div className="destination-content">
+          <p className="section-subtitle">You are now in</p>
+          <h2 className="h2 section-title">ADMIN PAGE</h2>
+          <p className="section-text">Select a date!</p>
+        </div>
+        <div className="admin-page">
+          <nav className="admin-navbar"></nav>
+          <Container className="mt-3">
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Select a date"
+              className="form-control mb-3"
+            />
+            <Table striped bordered hover className="booking-table">
+              <thead>
+                <tr>
+                  <th>Customer Name</th>
+                  <th>Destination Booked</th>
+                  <th>Date Booked</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredBookings.map((booking, index) => (
+                  <tr key={booking.id}>
+                    <td>{booking.name}</td>
+                    <td>{booking.location}</td>
+                    <td>{booking.date}</td>
+                    <td>{booking.billout}</td>
+                    <td>{booking.status}</td>
+                    <td>
+                      {spin ? (
+                        <>
+                          <div className="d-grid">
+                            {" "}
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              disabled="disabled"
+                            >
+                              Loading
+                            </Button>{" "}
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              disabled="disabled"
+                            >
+                              Loading
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="d-grid">
+                            {" "}
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              value={booking.id}
+                              onClick={updateStatusDone}
+                            >
+                              Done
+                            </Button>
+                          </div>
+                          <div className="d-grid">
+                            {" "}
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              value={booking.id}
+                              onClick={updateStatusCan}
+                            >
+                              Cancelled
+                            </Button>
+                          </div>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Container>
+        </div>
+      </div>
     </div>
   );
 };
